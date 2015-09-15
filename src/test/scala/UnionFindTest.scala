@@ -1,8 +1,20 @@
 import org.scalatest.{Matchers, FunSuite}
 
 class UnionFindTest extends FunSuite with Matchers {
-  test("should correctly connect points") {
-    var uf = new JUnionFind(4)
+  test("IUnionFind") {
+    testUnionFindImplementation(new IUnionFind(4))
+  }
+
+  test("FUnionFind") {
+    testUnionFindImplementation(FUnionFind.create(4))
+  }
+
+  test("JUnionFind") {
+    testUnionFindImplementation(new JUnionFind(4))
+  }
+
+  def testUnionFindImplementation(ufImpl: UnionFind) = {
+    var uf = ufImpl
 
     uf.connected(0, 0) should be(true)
     uf.connected(0, 3) should be(false)
