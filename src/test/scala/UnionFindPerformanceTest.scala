@@ -52,6 +52,23 @@ object UnionFindPerformanceTest extends Bench.LocalTime {
     }
   }
 
+
+  val hashTestSets = for {
+    size <- sizes
+  } yield (HashUnionFind.create(size), generateConnections(size, size))
+
+  performance of "HashUnionFind" in {
+    measure method "union" config (
+      exec.maxWarmupRuns -> warmUps
+      ) config (
+      exec.benchRuns -> benchRuns
+      ) in {
+      using(hashTestSets) in {
+        s => measurePerformance(s._1, s._2)
+      }
+    }
+  }
+
   val jTestSets = for {
     size <- sizes
   } yield (new JUnionFind(size), generateConnections(size, size))
